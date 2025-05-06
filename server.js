@@ -6,9 +6,17 @@ const cors = require("cors");
 const app = express();
 const port = 3000;
 
+// Configuração do CORS
+const corsOptions = {
+  origin: "*", // Permitir todas as origens (substitua por um domínio específico, se necessário)
+  methods: "GET,POST,OPTIONS", // Métodos permitidos
+  allowedHeaders: "Content-Type,Authorization", // Cabeçalhos permitidos
+};
+
+app.use(cors(corsOptions));
+
 // Middleware para lidar com form-data
 const upload = multer();
-app.use(cors());
 
 app.post("/process_file", upload.single("file"), (req, res) => {
   if (!req.file) {

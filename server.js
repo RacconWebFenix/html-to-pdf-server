@@ -18,6 +18,11 @@ app.use(cors(corsOptions));
 // Middleware para lidar com form-data
 const upload = multer();
 
+// Endpoint GET para verificar o status do servidor
+app.get("/", (req, res) => {
+  res.status(200).send("Servidor está rodando!");
+});
+
 app.post("/process_file", upload.single("file"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "Nenhum arquivo enviado" });
@@ -41,5 +46,5 @@ app.post("/process_file", upload.single("file"), (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`); //Alterar dados de dominio e porta
+  console.log(`Servidor rodando em http://localhost:${port}`); // Alterar dados de domínio e porta
 });

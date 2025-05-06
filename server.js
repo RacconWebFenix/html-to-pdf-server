@@ -1,0 +1,37 @@
+const express = require('express');
+const multer = require('multer');
+const bodyParser = require('body-parser');
+const cors = require('cors'); 
+
+const app = express();
+const port = 3000;
+
+// Middleware para lidar com form-data
+const upload = multer();
+app.use(cors());
+
+app.post('/process_file', upload.single('file'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: 'Nenhum arquivo enviado' });
+    }
+
+    const fileData = req.file.buffer;
+    const fileMimeType = req.file.mimetype;
+    const fileName = 'file.pdf'; // Usamos o nome de arquivo padrão 'file.pdf'
+
+    const responseData = [{
+        binary: {
+                data: Buffer.from(fileData).toString('base64'), // Codificamos para Base64
+                mimeType: fileMimeType,
+                fileName: fileName
+        }
+    }];
+
+    res.status(200).json(responseData);
+});
+
+
+
+app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`); //Alterar dados de dominio e porta
+});
